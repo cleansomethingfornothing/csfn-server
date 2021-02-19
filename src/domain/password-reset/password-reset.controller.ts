@@ -21,7 +21,7 @@ export class PasswordResetController {
     @Validation([CREATE])
     @HttpCode(200)
     reset(@Body()reset: PasswordReset): Promise<void> {
-        return this.userService.findOneByEmail(reset.email)
+        return this.userService.findOneByEmail({email: reset.email})
             .catch(() => Promise.reject(new NotFoundException('email')))
             .then(() => this.resetService.add({...reset, code: uuid()}))
             .then((saved) => this.mailService.sendPasswordResetEmail(saved))
@@ -44,7 +44,7 @@ export class PasswordResetController {
         return this.resetService.findCode(reset.code)
             .catch(() => Promise.reject(new BadRequestException('code')))
             .then((savedReset) => savedReset.email === reset.email ? Promise.resolve() : Promise.reject(new BadRequestException('email')))
-            .then(() => this.userService.findOneByEmail(reset.email)
+            .then(() => this.userService.findOneByEmail({email: reset.email})
                 .catch(() => Promise.reject(new BadRequestException('email'))))
             .then((user) => this.authService.changePassword(user, reset.newPassword))
             .then(() => this.resetService.remove(reset.email))

@@ -31,8 +31,8 @@ export class UsersService {
             .getOne()
     }
 
-    findOneByEmail(email: string): Promise<User> {
-        return this.userRepository.findOneOrFail({email}, {relations: ['picture']})
+    findOneByEmail({email, facebookId, googleId}: { email: string, facebookId?: string, googleId?: string }): Promise<User> {
+        return this.userRepository.findOneOrFail({where: [{email}, {facebookId}, {googleId}], relations: ['picture']})
     }
 
     findTopUsers(userCountry: string, sortBy: 'totalWeight' | 'totalVolume'): Promise<any> {

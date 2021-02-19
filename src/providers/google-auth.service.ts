@@ -10,7 +10,12 @@ export class GoogleAuthService {
         return new OAuth2Client(clientId).verifyIdToken({idToken, audience: clientId})
             .then((ticket) => {
                 const payload = ticket.getPayload()
-                return {email: payload.email, pictureUrl: payload.picture}
+                return {
+                    googleId: ticket.getUserId(),
+                    email: payload.email,
+                    pictureUrl: payload.picture,
+                    name: payload.name
+                }
             })
             .catch(() => Promise.reject(new BadRequestException('invalidToken')))
     }

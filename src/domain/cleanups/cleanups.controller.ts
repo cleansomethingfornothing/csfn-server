@@ -40,7 +40,6 @@ export class CleanupsController {
         return this.cleanupsService.findOne(id)
             .then(c => classToPlain(c))
             .catch((err) => {
-                console.log(err)
                 return Promise.reject(new NotFoundException())
             })
     }

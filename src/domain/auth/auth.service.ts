@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     validateLogin(email: string, password: string): Promise<User> {
-        return this.userService.findOneByEmail(email)
+        return this.userService.findOneByEmail({email})
             .catch(() => Promise.reject(new UnauthorizedException('invalidEmail')))
             .then((user) => CryptoUtils.comparePasswordWithHash(password, user.password)
                 .then(() => user)
@@ -43,17 +43,27 @@ export class AuthService {
     }
 
     loginWithSocialNetwork(profile: SocialProfile, country: string): Promise<[User, boolean]> {
-        return this.userService.findOneByEmail(profile.email)
+        return this.userService.findOneByEmail({
+                email: profile.email,
+                facebookId: profile.facebookId,
+                googleId: profile.googleId
+            })
+            .then((user) => this.userService
+                .update(user.id, profile.googleId
+                    ? {...user, googleId: profile.googleId}
+                    : {...user, facebookId: profile.facebookId}))
             .then((user) => [user, false])
             .catch(() => this.imagesService.addFromExternal(profile.pictureUrl)
                 .then((picture) => {
                     const generateUsername = (username, i = 1) => this.userService.checkUsername(username)
                         .then(exists => !exists ? username : generateUsername(username + i))
 
-                    return generateUsername(profile.email.split('@')[0])
+                    return generateUsername(profile.name.toLowerCase().replace(/\s/g, '_'))
                         .then((username) => CryptoUtils.hashPassword(uuidv4())
                             .then((password) => this.userService.register({
                                 username,
+                                facebookId: profile.facebookId,
+                                googleId: profile.googleId,
                                 email: profile.email,
                                 picture,
                                 password: password,

@@ -13,8 +13,14 @@ export default class User {
     @PrimaryGeneratedColumn()
     id?: number
 
+    @Column({nullable: true})
+    facebookId?: string
+
+    @Column({nullable: true})
+    googleId?: string
+
     @IsEmpty({groups: [UPDATE_EMAIL, UPDATE_PASSWORD], message: 'picture must be setted updating the user'})
-    @IsNotEmpty({groups: [CREATE]})
+    @IsNotEmpty({groups: [UPDATE]})
     @IsUnique({entity: User, column: 'pictureId', nestedKey: 'id'}, {groups: [UPDATE]})
     @ReferenceExists(Image, {groups: [UPDATE]})
     @OneToOne(type => Image, {onDelete: 'SET NULL'})

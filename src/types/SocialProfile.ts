@@ -1,4 +1,7 @@
 interface SocialProfile {
-    email: string,
+    facebookId?: string
+    googleId?: string
+    name: string
+    email: string
     pictureUrl: string
 }
