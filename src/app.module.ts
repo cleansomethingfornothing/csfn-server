@@ -31,9 +31,9 @@ const RedisStore = ConnectRedis(session)
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      ssl: {
+      ssl: process.env.NODE_ENV !== 'development' ? {
         rejectUnauthorized: false
-      },
+      } : undefined,
       entities: [
         'dist/**/*.entity{.ts,.js}'
       ],
