@@ -13,9 +13,11 @@ export default class User {
     @PrimaryGeneratedColumn()
     id?: number
 
+    @Exclude({toPlainOnly: true})
     @Column({nullable: true})
     facebookId?: string
 
+    @Exclude({toPlainOnly: true})
     @Column({nullable: true})
     googleId?: string
 
