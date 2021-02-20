@@ -74,7 +74,7 @@ export class ImagesService {
     @Cron(CronExpression.EVERY_DAY_AT_1AM)
     clean() {
         this.imagesRepository.query('SELECT image.id, image.name FROM image, users' +
-            ' WHERE "cleanupId" IS NULL AND "users"."pictureId" != image.id')
+            ' WHERE "cleanupId" IS NULL AND image.id NOT IN (SELECT "pictureId" from users)')
             .then((images) => Promise.all(images.map((image) => this.bucket.file(image.name).delete()))
                 .then(() => this.imagesRepository.delete({id: In(images.map(({id}) => id))}))
                 .then(() => this.logger.log(`Images cleaned (${images.length})`)))
