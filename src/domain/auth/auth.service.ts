@@ -58,7 +58,10 @@ export class AuthService {
                     const generateUsername = (username, i = 1) => this.userService.checkUsername(username)
                         .then(exists => !exists ? username : generateUsername(username + i))
 
-                    return generateUsername(profile.name.toLowerCase().replace(/\s/g, '_'))
+                    return generateUsername(profile.name.toLowerCase()
+                        .replace(/\s/g, '_')
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, ''))
                         .then((username) => CryptoUtils.hashPassword(uuidv4())
                             .then((password) => this.userService.register({
                                 username,
