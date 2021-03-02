@@ -11,8 +11,6 @@ export default class Address {
     city: string
 
     @Column()
-    @IsNotEmpty({groups: [CREATE]})
-    @IsString({groups: [CREATE, UPDATE]})
     state: string
 
     @Column()
