@@ -10,7 +10,7 @@ export default class Address {
     @IsString({groups: [CREATE, UPDATE]})
     city: string
 
-    @Column()
+    @Column({nullable: true})
     state: string
 
     @Column()
