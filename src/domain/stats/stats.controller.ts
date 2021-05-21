@@ -25,22 +25,26 @@ export class StatsController {
     return this.statsService.getMonthStats(country)
   }
 
+  @Logged()
   @Get('top_users')
   getTopUsers(@Query(getValidationPipe(['users'])) { country, sort }: StatsQuery) {
     return this.statsService.getTopUsers(country, sort)
   }
 
+  @Logged()
   @Get('countries_count')
   getCountriesCount() {
     return this.statsService.getCountriesCount()
   }
 
+  @Logged()
   @Get('countries')
   getCountries() {
     return this.statsService.getCountries()
       .then((countries) => plainToClass(CountriesStats, countries))
   }
 
+  @Logged()
   @Get('user')
   getUserStats(@Query(getValidationPipe()) { userId, groupBy }: UserStatsQuery) {
     return this.statsService.getUserStats(userId, groupBy)
