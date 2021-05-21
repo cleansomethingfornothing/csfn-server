@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import {
     registerDecorator,
     ValidationArguments,
@@ -6,35 +6,37 @@ import {
     ValidatorConstraint,
     ValidatorConstraintInterface
 } from 'class-validator'
-import {getManager} from 'typeorm'
+import { getManager } from 'typeorm'
 
 @Injectable()
-@ValidatorConstraint({name: 'isUnique', async: true})
+@ValidatorConstraint({ name: 'isUnique', async: true })
 class IsUniqueValidator implements ValidatorConstraintInterface {
 
-    defaultMessage(validationArguments?: ValidationArguments): string {
-        return `$property is already being used`
-    }
+  defaultMessage(validationArguments?: ValidationArguments): string {
+    return `$property is already being used`
+  }
 
-    validate(value: any, {constraints, property}: ValidationArguments): Promise<boolean> {
-        const [entity, column, nestedKey] = constraints
+  validate(value: any,
+           { constraints, property }: ValidationArguments): Promise<boolean> {
+    const [entity, column, nestedKey] = constraints
 
-        return getManager()
-            .findOne(entity, {[column || property]: nestedKey ? value[nestedKey] : value})
-            .then((found) => !found)
-    }
+    return getManager()
+      .findOne(entity, { [column || property]: nestedKey ? value[nestedKey] : value })
+      .then((found) => !found)
+  }
 
 }
 
-export function IsUnique<T>({entity, column, nestedKey}: { entity: T, column?: string, nestedKey?: string },
+export function IsUnique<T>({ entity, column, nestedKey }: { entity: T, column?: string, nestedKey?: string },
                             validationOptions?: ValidationOptions) {
-    return (object: any, propertyName: string) => {
-        registerDecorator({
-            target: object.constructor,
-            propertyName,
-            options: validationOptions,
-            constraints: [entity, column, nestedKey],
-            validator: IsUniqueValidator
-        })
-    }
+  return (object: any,
+          propertyName: string) => {
+    registerDecorator({
+      target: object.constructor,
+      propertyName,
+      options: validationOptions,
+      constraints: [entity, column, nestedKey],
+      validator: IsUniqueValidator
+    })
+  }
 }

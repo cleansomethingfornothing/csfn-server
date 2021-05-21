@@ -1,13 +1,13 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import {
-  ArrayNotEmpty,
-  IsDateString,
-  IsEmpty,
-  IsNotEmpty,
-  IsNotEmptyObject,
-  IsNumber,
-  MaxLength,
-  ValidateNested
+    ArrayNotEmpty,
+    IsDateString,
+    IsEmpty,
+    IsNotEmpty,
+    IsNotEmptyObject,
+    IsNumber,
+    MaxLength,
+    ValidateNested
 } from 'class-validator'
 import { CREATE, UPDATE } from '../../validation/groups'
 import Location from '../../types/Location'

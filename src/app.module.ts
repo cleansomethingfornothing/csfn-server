@@ -1,23 +1,23 @@
-import {RedisModule, RedisService} from 'nestjs-redis'
-import {AuthModule} from './domain/auth/auth.module'
-import {UsersModule} from './domain/users/users.module'
-import {TypeOrmModule} from '@nestjs/typeorm'
-import {ImagesModule} from './domain/images/images.module'
-import {PasswordResetModule} from './domain/password-reset/password-reset.module'
-import {ServeStaticModule} from '@nestjs/serve-static'
-import {join} from 'path'
-import {ScheduleModule} from '@nestjs/schedule'
-import {ConfigModule} from '@nestjs/config'
-import {MailerModule} from '@nestjs-modules/mailer'
-import {SessionModule} from 'nestjs-session'
-import {ProvidersModule} from './providers/providers.module'
+import { RedisModule, RedisService } from 'nestjs-redis'
+import { AuthModule } from './domain/auth/auth.module'
+import { UsersModule } from './domain/users/users.module'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { ImagesModule } from './domain/images/images.module'
+import { PasswordResetModule } from './domain/password-reset/password-reset.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
+import { ScheduleModule } from '@nestjs/schedule'
+import { ConfigModule } from '@nestjs/config'
+import { MailerModule } from '@nestjs-modules/mailer'
+import { SessionModule } from 'nestjs-session'
+import { ProvidersModule } from './providers/providers.module'
 import * as session from 'express-session'
 import * as ConnectRedis from 'connect-redis'
-import {Module} from '@nestjs/common'
-import {CleanupsModule} from './domain/cleanups/cleanups.module';
-import {StatsModule} from './domain/stats/stats.module';
-import {CleanupsSubscriber} from './domain/cleanups/cleanups.subscriber'
-import {RootController} from './domain/root.controller'
+import { Module } from '@nestjs/common'
+import { CleanupsModule } from './domain/cleanups/cleanups.module'
+import { StatsModule } from './domain/stats/stats.module'
+import { CleanupsSubscriber } from './domain/cleanups/cleanups.subscriber'
+import { RootController } from './domain/root.controller'
 
 const RedisStore = ConnectRedis(session)
 
@@ -59,7 +59,7 @@ const RedisStore = ConnectRedis(session)
           rolling: true,
           saveUninitialized: false,
           resave: false,
-          store: new RedisStore({client: redisService.getClient()}),
+          store: new RedisStore({ client: redisService.getClient() }),
           cookie: {
             maxAge: 30 * 24 * 60 * 60 * 1000, // One month
             httpOnly: true

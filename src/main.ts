@@ -5,7 +5,7 @@ import { ClassSerializerInterceptor } from '@nestjs/common'
 function bootstrap() {
   NestFactory.create(AppModule)
     .then((app) => {
-      if (process.env.NODE_ENV === 'development') {
+      if (['development', 'debug'].includes(process.env.NODE_ENV)) {
         app.enableCors({ origin: 'http://localhost:8888', credentials: true })
       }
       app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))

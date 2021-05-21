@@ -1,31 +1,31 @@
-import {CanActivate, ExecutionContext, ForbiddenException, UnauthorizedException, UseGuards} from '@nestjs/common'
-import {Request} from 'express'
+import { CanActivate, ExecutionContext, ForbiddenException, UnauthorizedException, UseGuards } from '@nestjs/common'
+import { Request } from 'express'
 
 interface LoggedGuardOptions {
-    self: boolean
+  self: boolean
 }
 
 class LoggedGuard implements CanActivate {
 
-    self: boolean
+  self: boolean
 
-    constructor(opts?: LoggedGuardOptions) {
-        this.self = opts?.self
+  constructor(opts?: LoggedGuardOptions) {
+    this.self = opts?.self
+  }
+
+  canActivate(context: ExecutionContext): boolean {
+    const req = context.switchToHttp().getRequest() as Request
+
+    if (!(req.session as any).user) {
+      throw new UnauthorizedException()
     }
 
-    canActivate(context: ExecutionContext): boolean {
-        const req = context.switchToHttp().getRequest() as Request
-
-        if (!(req.session as any).user) {
-            throw new UnauthorizedException()
-        }
-
-        if (this.self && (req.session as any).user.id !== Number(req.params.id)) {
-            throw new ForbiddenException()
-        }
-
-        return true
+    if (this.self && (req.session as any).user.id !== Number(req.params.id)) {
+      throw new ForbiddenException()
     }
+
+    return true
+  }
 
 }
 
