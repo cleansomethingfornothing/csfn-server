@@ -6,7 +6,7 @@ function bootstrap() {
   NestFactory.create(AppModule)
     .then((app) => {
       if (['development', 'debug'].includes(process.env.NODE_ENV)) {
-        app.enableCors({ origin: 'http://localhost:8888', credentials: true })
+        app.enableCors({ origin: 'https://localhost:8888', credentials: true })
       }
       app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
       const port = process.env.PORT || 3000
