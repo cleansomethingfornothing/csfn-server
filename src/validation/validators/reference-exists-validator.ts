@@ -7,7 +7,6 @@ import {
     ValidatorConstraintInterface
 } from 'class-validator'
 import {getManager} from 'typeorm'
-import {ClassType} from 'class-transformer/ClassTransformer'
 
 @Injectable()
 @ValidatorConstraint({name: 'referenceExists', async: true})
@@ -26,7 +25,7 @@ class ReferenceExistsValidator implements ValidatorConstraintInterface {
 
 }
 
-export function ReferenceExists<T>(entity: ClassType<T>, validationOptions?: ValidationOptions) {
+export function ReferenceExists<T>(entity: T, validationOptions?: ValidationOptions) {
     return (object: any, propertyName: string) => {
         registerDecorator({
             target: object.constructor,

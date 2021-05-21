@@ -1,7 +1,7 @@
 import User from '../domain/users/user.entity'
 
 export default class TopUsers {
-    world: User[]
+  world: User[]
 
-    [country: string]: User[]
+  [country: string]: User[]
 }

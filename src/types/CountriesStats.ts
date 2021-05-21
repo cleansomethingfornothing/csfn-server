@@ -1,14 +1,14 @@
-import {Transform} from 'class-transformer'
+import { Transform } from 'class-transformer'
 
 export class CountriesStats {
-    country: string
+  country: string
 
-    @Transform(value => parseInt(value, 10))
-    weight: number
+  @Transform(({ value }) => parseInt(value, 10))
+  weight: number
 
-    @Transform(value => parseInt(value, 10))
-    volume: number
+  @Transform(({ value }) => parseInt(value, 10))
+  volume: number
 
-    @Transform(value => parseInt(value, 10))
-    users: number
+  @Transform(({ value }) => parseInt(value, 10))
+  users: number
 }

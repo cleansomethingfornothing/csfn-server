@@ -7,7 +7,6 @@ import {
     ValidatorConstraintInterface
 } from 'class-validator'
 import {getManager} from 'typeorm'
-import {ClassType} from 'class-transformer/ClassTransformer'
 
 @Injectable()
 @ValidatorConstraint({name: 'isUnique', async: true})
@@ -27,7 +26,7 @@ class IsUniqueValidator implements ValidatorConstraintInterface {
 
 }
 
-export function IsUnique<T>({entity, column, nestedKey}: { entity: ClassType<T>, column?: string, nestedKey?: string },
+export function IsUnique<T>({entity, column, nestedKey}: { entity: T, column?: string, nestedKey?: string },
                             validationOptions?: ValidationOptions) {
     return (object: any, propertyName: string) => {
         registerDecorator({
