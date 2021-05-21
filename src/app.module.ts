@@ -62,7 +62,8 @@ const RedisStore = ConnectRedis(session)
           store: new RedisStore({ client: redisService.getClient() }),
           cookie: {
             maxAge: 30 * 24 * 60 * 60 * 1000, // One month
-            httpOnly: true
+            httpOnly: true,
+            sameSite: 'none'
           }
         }
       })
