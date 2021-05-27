@@ -65,7 +65,7 @@ export default class User {
   @Column({ default: 0 })
   totalCleanups?: number
 
-  @Column({ default: 0 })
+  @Column({ type: 'decimal', precision: 6, scale: 2, default: 0 })
   totalWeight?: number
 
   @Column({ default: 0 })

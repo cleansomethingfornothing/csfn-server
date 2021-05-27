@@ -33,7 +33,7 @@ export default class Cleanup {
   @IsNumber({}, { groups: [CREATE, UPDATE] })
   volume?: number
 
-  @Column()
+  @Column({ type: 'decimal', precision: 6, scale: 2 })
   @IsNotEmpty({ groups: [CREATE] })
   @IsNumber({}, { groups: [CREATE, UPDATE] })
   weight?: number
