@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Repository } from 'typeorm'
+import { MoreThan, Repository } from 'typeorm'
 import Stats from './entities/Stats.entity'
 import Count from './entities/Count.entity'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -27,13 +27,20 @@ export class StatsService {
 
   getMonthStats(userCountry: string) {
     return Promise.all([
-      this.statsRepository.find({ country: userCountry }),
+      this.statsRepository.find({
+        where: [
+          { country: userCountry, volume: MoreThan(0) },
+          { country: userCountry, weight: MoreThan(0) }
+        ]
+      }),
       this.statsRepository.createQueryBuilder('stats')
         .select('SUM(weight)', 'weight')
         .addSelect('SUM(volume)', 'volume')
         .addSelect('month')
         .addSelect('year')
         .groupBy('month, year')
+        .where('weight > 0')
+        .where('volume > 0')
         .getRawMany()])
       .then(([country, world]) => ({ country, world }))
   }
@@ -49,9 +56,11 @@ export class StatsService {
   }
 
   getCountriesCount() {
-    return this.statsRepository.createQueryBuilder('countries_count')
-      .select('count(distinct country)')
-      .getRawOne()
+    return this.statsRepository.query('SELECT COUNT(*) FROM (SELECT country ' +
+      'FROM stats GROUP BY country ' +
+      'HAVING SUM(weight) > 0 OR SUM(volume) > 0 ' +
+      'OR (SELECT COUNT(id) FROM cleanups WHERE "locationAddressCountrycode" = stats.country) > 0 ' +
+      'OR (SELECT COUNT(*) FROM users WHERE users.country = stats.country) > 0) as sub').then(([count]) => count)
   }
 
   getCountries() {
