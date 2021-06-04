@@ -37,7 +37,7 @@ const RedisStore = ConnectRedis(session)
       entities: [
         'dist/**/*.entity{.ts,.js}'
       ],
-      synchronize: process.env.NODE_ENV === 'development',
+      synchronize: process.env.NODE_ENV !== 'production',
       subscribers: [CleanupsSubscriber],
       migrations: ['migration/*.js'],
       cli: {
