@@ -44,7 +44,7 @@ export class CleanupsService {
         { bounds: coordsBoundsToPolygon(bounds) })
     }
 
-    if (origin) {
+    if (origin && !bounds) {
       queryBuilder
         .andWhere('ST_DistanceSphere(cleanup.locationCoords, ST_GeomFromText(:origin, 4326)) < 2500000')
         .orderBy('ST_DistanceSphere(cleanup.locationCoords, ST_GeomFromText(:origin, 4326))')
