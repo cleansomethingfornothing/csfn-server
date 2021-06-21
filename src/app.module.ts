@@ -64,7 +64,7 @@ const RedisStore = ConnectRedis(session)
           cookie: {
             maxAge: 30 * 24 * 60 * 60 * 1000, // One month
             httpOnly: true,
-            sameSite: process.env.NODE_ENV !== 'development' ? 'none' : 'strict',
+            sameSite: process.env.NODE_ENV !== 'development' ? 'none' : 'lax',
             secure: process.env.NODE_ENV !== 'development'
           }
         }
